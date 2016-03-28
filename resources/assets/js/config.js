@@ -18,7 +18,7 @@ function config($stateProvider, $urlRouterProvider) {
             controller: "HomeController",
             authenticate: true
         });
-    
+
     $urlRouterProvider
         .otherwise("/login");
 }
@@ -27,6 +27,11 @@ function checkAuth($rootScope, $state, AuthService) {
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
         if (toState.authenticate && !AuthService.isAuthenticated()){
             $state.transitionTo("login");
+            event.preventDefault();
+        }
+        
+        if (!toState.authenticate && AuthService.isAuthenticated()){
+            $state.transitionTo("dashboard");
             event.preventDefault();
         }
     })

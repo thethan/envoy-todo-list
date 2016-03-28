@@ -13,7 +13,7 @@ class CreateTodoTable extends Migration
     public function up()
     {
         Schema::create('todos', function ($table) {
-            $table->string('id')->unique();
+            $table->increments('id');
             $table->integer('user_id');
             $table->string('title');
             $table->text('description');
@@ -28,9 +28,8 @@ class CreateTodoTable extends Migration
         });
 
         Schema::create('categories', function ($table) {
-            $table->string('id')->unique();
+            $table->increments('id');
             $table->string('title');
-            $table->integer('category_id');
             $table->timestamps();
 
         });

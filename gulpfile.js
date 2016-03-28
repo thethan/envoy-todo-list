@@ -25,7 +25,7 @@ elixir(function(mix) {
     .scripts([
         'config.js',
         'factory.js',
-        'controllers/*',
+        'controllers/*.js',
     ]);
     mix.sass([
         '../../../bower_components/angular-material/angular-material.scss',

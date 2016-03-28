@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
+
+    protected $guard = 'web';
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -67,6 +73,68 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'api_token' => Str::random(60),
         ]);
     }
+
+    public function loginJson(Request $request)
+    {
+        if(!$request->isJson())
+        {
+            var_dump('not allowed');
+        }
+
+        $this->validateLogin($request);
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+
+        if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        $credentials = $this->getJsonCredentials($request);
+
+
+        if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
+            
+            return $this->handleUserWasAuthenticatedJson($request, $throttles);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        if ($throttles && ! $lockedOut) {
+            $this->incrementLoginAttempts($request);
+        }
+
+        return $this->sendFailedLoginResponse($request);
+    }
+
+
+    protected function handleUserWasAuthenticatedJson(Request $request, $throttles)
+    {
+        if ($throttles) {
+            $this->clearLoginAttempts($request);
+        }
+
+        if (method_exists($this, 'authenticated')) {
+            return $this->authenticated($request, Auth::guard($this->getGuard())->user());
+        }
+
+        return response()->json(Auth::guard($this->getGuard())->user());
+    }
+
+
+    protected function getJsonCredentials(Request $request)
+    {
+        return $request->only($this->loginUsername(), 'password');
+    }
+
+
+
 }

@@ -11,10 +11,22 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
+Route::group(['middleware' => 'web'], function () {
 
-    Route::get('/', function () {
+    Route::get('/', function(){
         return view('welcome');
+    });
+
+
+
+});
+
+Route::put('login', 'Auth\AuthController@loginJson');
+
+Route::group(['middleware' => 'auth:api'], function () {
+
+    Route::get('/authenticated', function(){
+        return response(null, 204);
     });
 
 });

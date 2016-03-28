@@ -29,6 +29,6 @@ class CreateSessionTable extends Migration
      */
     public function down()
     {
-        Schema::drop('session');
+        Schema::drop('sessions');
     }
 }

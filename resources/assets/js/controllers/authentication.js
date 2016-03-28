@@ -1,8 +1,13 @@
 angular.module('todoApp')
     .controller('AuthenticationController', AuthenticationController);
 
-AuthenticationController.$inject = ['$scope'];
+AuthenticationController.$inject = ['$scope', 'AuthService'];
 
-function AuthenticationController($scope) {
+function AuthenticationController($scope, AuthService) {
     
+    $scope.submitLogin = function() {
+        console.log($scope.email);
+        return AuthService($scope.email, $scope.password);
+    }
+
 }

@@ -1,20 +1,20 @@
-<form>
+<form flex-offset="0" flex="100" flex-offset-gt-sm="30" flex-gt-md="40" flex-auto>
     <md-input-container class="md-block">
         <label>Email</label>
-        <input md-maxlength="30" required md-no-asterisk name="email" ng-model="email">
+        <input required md-no-asterisk name="email" ng-model="email">
         <div ng-messages="projectForm.description.$error">
             <div ng-message="required">This is required.</div>
         </div>
     </md-input-container>
     <md-input-container class="md-block">
-        <label>Client Name</label>
-        <input required name="password" ng-model="password">
+        <label>Password</label>
+        <input required name="password" ng-model="password" type="password">
         <div ng-messages="projectForm.clientName.$error">
             <div ng-message="required">This is required.</div>
         </div>
     </md-input-container>
 
-    <p style="font-size:.8em; width: 100%; text-align: center;">
-        Make sure to include <a href="https://docs.angularjs.org/api/ngMessages" target="_blank">ngMessages</a> module when using ng-message markup.
-    </p>
+    <md-button ng-click="$scope.submitLogin()">
+        submit
+    </md-button>
 </form>
