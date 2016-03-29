@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class CategoryController extends Controller
+class UsersController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $users = DB::table('users')->selec('id', 'name')->get();
 
-        return response()->json($categories, 200);
+
+        return response()->json($users, 200);
     }
     
     public function show()

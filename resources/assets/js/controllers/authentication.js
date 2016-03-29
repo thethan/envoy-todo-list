@@ -11,7 +11,6 @@ function AuthenticationController($rootScope, $scope, $state, AuthService) {
             .then(function successCallback(response) {
                 $rootScope.user = response.data;
                 localStorage.setItem('api_token', $rootScope.user.api_token);
-                console.log($state);
                 $state.go('dashboard');
                 window.location.href = '/';
 

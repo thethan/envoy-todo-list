@@ -6,12 +6,23 @@ TodoService.$inject = ['$http', '$state', '$rootScope'];
 function TodoService($http, $state, $rootScope) {
 
     var service = {
+        getCategories: getCategories,
         index : index,
         get: get,
         save: save,
         update: update,
         delete: deleteTodo,
         user: user,
+        completed:completed
+    }
+
+    function getCategories() {
+        return $http({
+            method: 'GET',
+            url: 'api/categories'+getApiToken(),
+            headers : { 'Content-Type': 'application/json' }
+        });
+
     }
     
     function index() {
@@ -58,6 +69,19 @@ function TodoService($http, $state, $rootScope) {
             url: 'api/todos/'+id+getApiToken(),
             data: data,
             headers : { 'Content-Type': 'application/json' }
+
+        });
+    }
+
+    function completed(id, value) {
+        return $http({
+            method: 'POST',
+            url: 'api/todos/'+id+getApiToken(),
+            headers : { 'Content-Type': 'application/json' },
+            data:{
+                "_method":"PUT",
+                "completed":value
+            }
 
         });
     }

@@ -5,6 +5,8 @@
     <title>Laravel</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <link href="{{ asset('assets/css/vendor.css') }}" rel="stylesheet">
     <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
 </head>

@@ -30,6 +30,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::group(['prefix' => 'api'], function () {
 
+        Route::get('categories', 'CategoryController@index');
+
+        Route::get('users', 'UsersController@index');
+
         Route::get('todos', 'TodosController@index');
 
         Route::get('todos/user', 'TodosController@user');
@@ -39,6 +43,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('todos', 'TodosController@store');
 
         Route::patch('todos/{id}', 'TodosController@update');
+
+        Route::put('todos/{id}', 'TodosController@completed');
 
         Route::delete('todos/{id}', 'TodosController@delete');
 

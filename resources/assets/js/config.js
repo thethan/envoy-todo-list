@@ -3,8 +3,12 @@ angular.module('todoApp', [ 'ngMaterial', 'ui.router'])
     .run(checkAuth);
 
 
-function config($stateProvider, $urlRouterProvider) {
+function config($mdIconProvider, $stateProvider, $urlRouterProvider) {
 
+    $mdIconProvider
+        .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
+        .iconSet('device', 'img/icons/sets/device-icons.svg', 24)
+        .iconSet('communication', 'img/icons/sets/communication-icons.svg', 24)
 
     // Now set up the states
     $stateProvider
