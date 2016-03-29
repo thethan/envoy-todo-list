@@ -13,10 +13,9 @@
 
 Route::group(['middleware' => 'web'], function () {
 
-    Route::get('/', function(){
+    Route::get('/', function () {
         return view('welcome');
     });
-
 
 
 });
@@ -25,8 +24,18 @@ Route::put('login', 'Auth\AuthController@loginJson');
 
 Route::group(['middleware' => 'auth:api'], function () {
 
-    Route::get('/authenticated', function(){
+    Route::get('/authenticated', function () {
         return response(null, 204);
+    });
+
+    Route::group(['prefix' => 'api'], function () {
+
+        Route::get('todos', 'TodosController@index');
+
+        Route::get('todos/user', 'TodosController@user');
+
+        Route::get('todos/{id}', 'TodosController@show');
+
     });
 
 });

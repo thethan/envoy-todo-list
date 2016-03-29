@@ -10,8 +10,11 @@ class Category extends Model
 
     protected $fillable = ['title'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function todos()
     {
-        return $this->hasMany('App/Todo');
+        return $this->hasMany('App\Todo');
     }
 }

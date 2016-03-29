@@ -2,15 +2,17 @@ angular.module('todoApp', [ 'ngMaterial', 'ui.router'])
     .config(config)
     .run(checkAuth);
 
+
 function config($stateProvider, $urlRouterProvider) {
 
-    //
+
     // Now set up the states
     $stateProvider
         .state('login', {
             url: "/login",
             templateUrl: "/html/auth/login.html",
             controller: "AuthenticationController",
+            authenticate: false
         })
         .state('dashboard', {
             url: "/",
@@ -25,14 +27,13 @@ function config($stateProvider, $urlRouterProvider) {
 
 function checkAuth($rootScope, $state, AuthService) {
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
-        if (toState.authenticate && !AuthService.isAuthenticated()){
-            $state.transitionTo("login");
+        console.log(toState.authenticate, AuthService.isAuthenticated());
+        console.log(toState);
+        if (toState.authenticate === true && !AuthService.isAuthenticated().value === false){
+            console.log('ethan');
+            $state.go("login");
             event.preventDefault();
         }
         
-        if (!toState.authenticate && AuthService.isAuthenticated()){
-            $state.transitionTo("dashboard");
-            event.preventDefault();
-        }
     })
 }

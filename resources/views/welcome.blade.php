@@ -9,18 +9,20 @@
     <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
 </head>
 <body ng-app="todoApp">
-<div layout="column">
+<div layout="column" ng-controller="AppController">
     <md-toolbar flex>
         <div class="md-toolbar-tools">
             <span>My App's Title</span>
             <!-- fill up the space between left and right area -->
             <span flex></span>
+
         </div>
     </md-toolbar>
     <md-content layout="column" layout-sm="column" layout-fill>
-        <h1 flex="100">Todo Application</h1>
-        <ui-view flex="100">
 
+        <h1 flex="100">Todo Application</h1>
+
+        <ui-view flex="100">
         </ui-view>
     </md-content>
 </div>

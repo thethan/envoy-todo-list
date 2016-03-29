@@ -24,7 +24,7 @@ elixir(function(mix) {
     ], 'public/assets/js/vendor.js')
     .scripts([
         'config.js',
-        'factory.js',
+        'factories/*.js',
         'controllers/*.js',
     ]);
     mix.sass([

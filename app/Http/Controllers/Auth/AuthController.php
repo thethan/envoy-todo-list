@@ -79,9 +79,8 @@ class AuthController extends Controller
 
     public function loginJson(Request $request)
     {
-        if(!$request->isJson())
-        {
-            var_dump('not allowed');
+        if(!$request->isJson()) {
+            return response()->json([],'415');
         }
 
         $this->validateLogin($request);
@@ -101,7 +100,7 @@ class AuthController extends Controller
 
 
         if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
-            
+
             return $this->handleUserWasAuthenticatedJson($request, $throttles);
         }
 
@@ -111,13 +110,16 @@ class AuthController extends Controller
         if ($throttles && ! $lockedOut) {
             $this->incrementLoginAttempts($request);
         }
-
-        return $this->sendFailedLoginResponse($request);
+        return response()->json(['Invalid Username and/or password'], 422);
     }
 
 
     protected function handleUserWasAuthenticatedJson(Request $request, $throttles)
     {
+        //make a new auth guard
+        Auth::guard($this->getGuard())->user()->api_token = str_random(60);
+        Auth::guard($this->getGuard())->user()->save();
+
         if ($throttles) {
             $this->clearLoginAttempts($request);
         }

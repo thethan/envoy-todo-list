@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Todo extends Model
 {
+    use SoftDeletes;
+    
+    protected $dates = ['deleted_at'];
     /**
      * @var array
      */
@@ -14,9 +18,9 @@ class Todo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function assignCategory()
+    public function category()
     {
-        return $this->belongsTo('App/Category');
+        return $this->belongsTo('App\Category');
     }
 
     /**
@@ -24,6 +28,6 @@ class Todo extends Model
      */
     public function assignToUser()
     {
-        return $this->belongsTo('App/User');
+        return $this->belongsTo('App\User');
     }
 }
