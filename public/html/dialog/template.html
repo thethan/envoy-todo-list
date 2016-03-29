@@ -1,0 +1,55 @@
+<md-dialog aria-label="" ng-cloak class="md-dialog-fullscreen" style="min-width:400px;" flex>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Edit</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Title</label>
+                        <input ng-model="todo.title">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Category</label>
+                        <md-select ng-model="todo.category_id">
+                            <md-option ng-repeat="category in categories" value="{{ category.id}}">
+                                {{category.title}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Assign to user</label>
+                        <md-select ng-model="todo.user_id">
+                            <md-option ng-repeat="user in users" value="{{user.id}}">
+                                {{user.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <md-input-container class="md-block">
+                    <label>Description</label>
+                    <textarea ng-model="todo.description" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="cancel()" md-autofocus>
+                Cancel
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="delete(todo.id)">
+                Delete
+            </md-button>
+            <md-button ng-click="save(todo)" style="margin-right:20px;">
+                Save
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

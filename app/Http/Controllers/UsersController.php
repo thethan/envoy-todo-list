@@ -11,7 +11,7 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = DB::table('users')->selec('id', 'name')->get();
+        $users = DB::table('users')->select('id', 'name')->get();
 
 
         return response()->json($users, 200);

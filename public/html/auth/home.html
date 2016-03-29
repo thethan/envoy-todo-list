@@ -1,2 +1,30 @@
+<div layout="column" layout-gt-sm="row">
+   <section flex="60" >
+       <h2>Your Todos</h2>
+       <md-list-item ng-repeat="todo in userTodos">
+           <md-checkbox ng-click="toggle(todo.id, todo.completed)" ng-checked="checkCompleted(todo.completed)"></md-checkbox>
+           <p>{{todo.title}}</p>
+           <md-icon class="md-secondary message" ng-click="assignTodo($event, todo.id)" aria-label="assign" md-font-set="material-icons">assignment</md-icon>
 
-   <h2>Home</h2>
+       </md-list-item>
+   </section>
+   <aside flex="40" >
+        <h3> All Todos</h3>
+       <label for="searchCategory">Search By Category</label>
+       <md-select ng-model="search.category_id" id="searchCategory">
+           <md-option selected value="" >All</md-option>
+           <md-option value="{{ category.id }}" ng-repeat="category in categories">{{ category.title }}</md-option>
+       </md-select>
+       <md-list-item ng-repeat="todo in todos | filter:search:strict" flex>
+           <p>{{todo.title}}</p>
+           <md-icon class="md-secondary message" ng-click="assignTodo($event, todo.id)" aria-label="assign" md-font-set="material-icons">assignment_returned</md-icon>
+       </md-list-item>
+   </aside>
+</div>
+<div layout>
+    <section>
+        <md-button ng-click="newTodo($event)">
+            New Todo
+        </md-button>
+    </section>
+</div>

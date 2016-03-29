@@ -42,9 +42,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         Route::post('todos', 'TodosController@store');
 
-        Route::patch('todos/{id}', 'TodosController@update');
+        Route::put('todos/{id}', 'TodosController@update');
 
-        Route::put('todos/{id}', 'TodosController@completed');
+        Route::put('todos/{id}/completed', 'TodosController@completed');
 
         Route::delete('todos/{id}', 'TodosController@delete');
 

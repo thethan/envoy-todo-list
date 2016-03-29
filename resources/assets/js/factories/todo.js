@@ -7,6 +7,7 @@ function TodoService($http, $state, $rootScope) {
 
     var service = {
         getCategories: getCategories,
+        getUsers: getUsers,
         index : index,
         get: get,
         save: save,
@@ -14,6 +15,15 @@ function TodoService($http, $state, $rootScope) {
         delete: deleteTodo,
         user: user,
         completed:completed
+    }
+
+    function getUsers() {
+        return $http({
+            method: 'GET',
+            url: 'api/users'+getApiToken(),
+            headers : { 'Content-Type': 'application/json' }
+        });
+
     }
 
     function getCategories() {
@@ -64,6 +74,7 @@ function TodoService($http, $state, $rootScope) {
     }
 
     function update(id, data) {
+        data._method = 'PUT';
         return $http({
             method: 'POST',
             url: 'api/todos/'+id+getApiToken(),
@@ -76,7 +87,7 @@ function TodoService($http, $state, $rootScope) {
     function completed(id, value) {
         return $http({
             method: 'POST',
-            url: 'api/todos/'+id+getApiToken(),
+            url: 'api/todos/'+id+'/completed'+getApiToken(),
             headers : { 'Content-Type': 'application/json' },
             data:{
                 "_method":"PUT",
@@ -90,6 +101,9 @@ function TodoService($http, $state, $rootScope) {
         return $http({
             method: 'POST',
             url: 'api/todos/'+id+getApiToken(),
+            data: {
+                "_method":"delete",
+            },
             headers : { 'Content-Type': 'application/json' }
 
         });

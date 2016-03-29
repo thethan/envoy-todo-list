@@ -73,7 +73,7 @@ class TodosController extends Controller
      */
     public function update(TodoRequest $todoRequest, $id)
     {
-        $request = $todoRequest->except(['category_name', 'api_token']);
+        $request = $todoRequest->except(['_method', 'category_name', 'api_token']);
 
         if($todoRequest->get('category_name')){
             $category = new Category(['title' => $todoRequest->get('category_name')]);
@@ -82,8 +82,10 @@ class TodosController extends Controller
         }
 
         $todo =  Todo::find($id);
+        foreach ($request as $key => $value){
+            $todo->$key = $value;
+        }
         $todo->save($request);
-
         return response()->json(null, 204);
     }
 

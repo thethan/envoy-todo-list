@@ -7,13 +7,21 @@ function HomeController(TodoService, $scope, $mdDialog, $mdMedia) {
 
     $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
 
-    TodoService.index().then(function successCallback(response) {
-        $scope.todos = response.data;
-    })
+    initFunction();
 
-    TodoService.user().then(function successCallback(response) {
-        $scope.userTodos = response.data;
-    })
+    function initFunction() {
+        TodoService.index().then(function successCallback(response) {
+            $scope.todos = response.data;
+        })
+
+        TodoService.getUsers().then(function successCallback(response) {
+            $scope.users = response.data;
+        })
+
+        TodoService.user().then(function successCallback(response) {
+            $scope.userTodos = response.data;
+        })
+    }
 
     TodoService.getCategories().then(function successCallback(response) {
         $scope.categories = response.data;
@@ -38,17 +46,55 @@ function HomeController(TodoService, $scope, $mdDialog, $mdMedia) {
         $mdDialog.show({
                 controller: DialogController,
                 templateUrl: '/html/dialog/template.html',
-                parent: angular.element(document.body),
+
                 targetEvent: ev,
                 clickOutsideToClose: true,
-                fullscreen: useFullScreen,
+                fullscreen: true,
                 locals : {
-                    todo : TodoService.get(id),
-                    categories: $scope.categories
+                    id : id,
+                    categories: $scope.categories,
+                    users:$scope.users
                 }
             })
-            .then(function (answer) {
-                $scope.status = 'You said the information was "' + answer + '".';
+            .then(function () {
+                TodoService.index().then(function successCallback(response) {
+                    $scope.todos = response.data;
+                })
+
+                TodoService.user().then(function successCallback(response) {
+                    $scope.userTodos = response.data;
+                })
+            }, function () {
+                $scope.status = 'You cancelled the dialog.';
+            });
+
+    }
+
+    $scope.newTodo = function (ev) {
+
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+
+        $mdDialog.show({
+                controller: DialogController,
+                templateUrl: '/html/dialog/template.html',
+
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: true,
+                locals : {
+                    id: null,
+                    categories: $scope.categories,
+                    users:$scope.users
+                }
+            })
+            .then(function () {
+                TodoService.index().then(function successCallback(response) {
+                    $scope.todos = response.data;
+                })
+
+                TodoService.user().then(function successCallback(response) {
+                    $scope.userTodos = response.data;
+                })
             }, function () {
                 $scope.status = 'You cancelled the dialog.';
             });
@@ -65,7 +111,18 @@ function HomeController(TodoService, $scope, $mdDialog, $mdMedia) {
     }
 }
 
-function DialogController($scope, $mdDialog) {
+function DialogController($scope, $mdDialog, TodoService, id, categories, users) {
+
+    if(id){
+        TodoService.get(id).then(function successCallback(response) {
+            $scope.todo = response.data;
+        })
+    }
+    
+    
+    $scope.categories = categories;
+    $scope.users = users;
+
     $scope.hide = function () {
         $mdDialog.hide();
     };
@@ -74,7 +131,22 @@ function DialogController($scope, $mdDialog) {
         $mdDialog.cancel();
     };
 
-    $scope.answer = function (answer) {
-        $mdDialog.hide(answer);
+    $scope.delete = function (id) {
+        TodoService.delete(id).then(function succesCallback(response) {
+            $mdDialog.hide();
+        })
+    };
+
+    $scope.save = function (todo) {
+        if(todo.id) {
+            TodoService.update(todo.id, todo).then(function succesCallback(response) {
+                $mdDialog.hide();
+            })
+        }else {
+            TodoService.save(todo).then(function succesCallback(response) {
+                $mdDialog.hide();
+            })
+        }
+
     };
 }
