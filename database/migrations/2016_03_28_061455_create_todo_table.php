@@ -16,8 +16,8 @@ class CreateTodoTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('title');
-            $table->text('description');
-            $table->integer('category_id');
+            $table->text('description')->nullable();
+            $table->integer('category_id')->nullable();
             $table->boolean('completed')->default(0);
 
             $table->softDeletes();
@@ -54,3 +54,4 @@ class CreateTodoTable extends Migration
         Schema::drop('categories');
     }
 }
+

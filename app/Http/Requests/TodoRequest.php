@@ -13,7 +13,7 @@ class TodoRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class TodoRequest extends Request
     {
         return [
             'title' => 'required',
-            'category_id' => 'required|integer',
+            'category_id' => 'required_if:category_name,null|integer',
             'user_id'=> 'required|integer',
         ];
     }

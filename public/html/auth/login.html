@@ -1,4 +1,9 @@
-<form flex-offset="0" flex="100" flex-offset-gt-sm="30" flex-gt-md="40" flex-auto>
+<div ng-if="errors[0]">
+    <ul>
+        <li ng-repeat="error in errors">{{ error }}</li>
+    </ul>
+</div>
+<form flex-offset="0" flex="100" flex-offset-gt-sm="30" flex-gt-md="40" flex>
     <md-input-container class="md-block">
         <label>Email</label>
         <input required md-no-asterisk name="email" ng-model="email">
@@ -14,7 +19,7 @@
         </div>
     </md-input-container>
 
-    <md-button ng-click="$scope.submitLogin()">
+    <md-button ng-click="submitLogin(event)">
         submit
     </md-button>
 </form>

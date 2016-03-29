@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Todo;
 use App\User;
 use App\Http\Requests\TodoRequest;
@@ -50,10 +51,16 @@ class TodosController extends Controller
      */
     public function store(TodoRequest $todoRequest)
     {
-        $request = $todoRequest->all();
+        $request = $todoRequest->except(['category_name', 'api_token']);
 
-        $todo = new Todo();
-        $todo->save($request);
+        if($todoRequest->get('category_name')){
+            $category = new Category(['title' => $todoRequest->get('category_name')]);
+            $category->save();
+            $request['category_id'] = $category->id;
+        }
+
+        $todo = new Todo($request);
+        $todo->save();
 
         return response()->json(null, 204);
 
@@ -66,9 +73,15 @@ class TodosController extends Controller
      */
     public function update(TodoRequest $todoRequest, $id)
     {
-        $request = $todoRequest->all();
+        $request = $todoRequest->except(['category_name', 'api_token']);
 
-        $todo = new Todo();
+        if($todoRequest->get('category_name')){
+            $category = new Category(['title' => $todoRequest->get('category_name')]);
+            $category->save();
+            $request['category_id'] = $category->id;
+        }
+
+        $todo =  Todo::find($id);
         $todo->save($request);
 
         return response()->json(null, 204);

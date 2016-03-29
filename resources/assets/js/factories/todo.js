@@ -1,47 +1,83 @@
 angular.module('todoApp')
-    .service('AuthService', AuthService);
+    .service('TodoService', TodoService);
 
-AuthService.$inject = ['$http', '$state', '$rootScope'];
+TodoService.$inject = ['$http', '$state', '$rootScope'];
 
-function AuthService($http, $state, $rootScope) {
+function TodoService($http, $state, $rootScope) {
 
     var service = {
-        isAuthenticated : isAuthenticated,
-        login: login
+        index : index,
+        get: get,
+        save: save,
+        update: update,
+        delete: deleteTodo,
+        user: user,
     }
     
-    function isAuthenticated() {
+    function index() {
+
+        return $http({
+            method: 'GET',
+            url: 'api/todos'+getApiToken(),
+            headers : { 'Content-Type': 'application/json' }
+        });
+
+
+    }
+
+    function user() {
+        return $http({
+            method: 'GET',
+            url: 'api/todos/user'+getApiToken(),
+            headers : { 'Content-Type': 'application/json' }
+        });
+    }
+    
+    function get(id) {
+        return $http({
+            method: 'GET',
+            url: 'api/todos/'+id+getApiToken(),
+            headers : { 'Content-Type': 'application/json' }
+
+        });
+    }
+
+    function save(data) {
+        return $http({
+            method: 'POST',
+            url: 'api/todos'+getApiToken(),
+            data: data,
+            headers : { 'Content-Type': 'application/json' }
+
+        });
+    }
+
+    function update(id, data) {
+        return $http({
+            method: 'POST',
+            url: 'api/todos/'+id+getApiToken(),
+            data: data,
+            headers : { 'Content-Type': 'application/json' }
+
+        });
+    }
+
+    function deleteTodo(id){
+        return $http({
+            method: 'POST',
+            url: 'api/todos/'+id+getApiToken(),
+            headers : { 'Content-Type': 'application/json' }
+
+        });
+    }
+
+    function getApiToken() {
         var api_token = localStorage.getItem('api_token');
         if($rootScope.user){
             api_token = $rootScope.user.api_token;
         }
-        return $http({
-            method: 'GET',
-            url: 'authenticated?api_token='+api_token,
-            headers : { 'Content-Type': 'application/json' }
-        }).then(function successCallback(response) {
-                console.log('success');
-                return true;
-            }, function errorCallback(response) {
-            console.log('error');
-            $state.go('login');
 
-            return false;
-        });
-    }
-    
-    function login($email, $password) {
-        return $http({
-            method: 'POST',
-            url: 'login',
-            data: {
-                "email":$email,
-                "password":$password,
-                "_method":"PUT"
-            },
-            headers : { 'Content-Type': 'application/json' }
-
-        });
+        return "?api_token="+api_token;
     }
     
     return service;

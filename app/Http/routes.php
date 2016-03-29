@@ -36,6 +36,12 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         Route::get('todos/{id}', 'TodosController@show');
 
+        Route::post('todos', 'TodosController@store');
+
+        Route::patch('todos/{id}', 'TodosController@update');
+
+        Route::delete('todos/{id}', 'TodosController@delete');
+
     });
 
 });
